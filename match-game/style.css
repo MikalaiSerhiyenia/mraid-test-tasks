@@ -23,6 +23,7 @@ body .main .match-game .match-game__info {
   gap: 12px;
   width: 500px;
   height: 500px;
+  animation: rotate 1s linear;
 }
 body .main .match-game .match-game__info .match-game__info__title {
   width: 100%;
@@ -41,6 +42,8 @@ body .main .match-game .match-game__play-field {
   height: 500px;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  animation: side-appear 1s linear;
 }
 body .main .match-game .match-game__play-field .match-game__play-field__row {
   width: 100%;
@@ -64,9 +67,41 @@ body .main .match-game .match-game__play-field .match-game__play-field__row .mat
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
+  animation: appear 2s ease-in-out;
 }
 @media screen and (max-width: 1023px) {
   body .main .match-game {
     flex-direction: column;
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotateX(90deg);
+  }
+  50% {
+    transform: rotateX(45deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+@keyframes side-appear {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
   }
 }/*# sourceMappingURL=style.css.map */
