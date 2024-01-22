@@ -37,6 +37,12 @@ body .main .match-game .match-game__info .match-game__info__timer {
 body .main .match-game .match-game__info .match-game__info__timer img {
   height: 80px;
 }
+body .main .match-game .match-game__info .match-game__info__timer .match-game__info__countdown {
+  align-self: flex-end;
+  font-size: 4rem;
+  font-weight: bold;
+  color: #418f21;
+}
 body .main .match-game .match-game__play-field {
   width: 500px;
   height: 500px;

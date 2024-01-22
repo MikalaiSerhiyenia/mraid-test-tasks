@@ -38,6 +38,12 @@ body {
           img {
             height: 80px;
           }
+          .match-game__info__countdown {
+            align-self: flex-end;
+            font-size: 4rem;
+            font-weight: bold;
+            color: #418f21;
+          }
         }
       }
       .match-game__play-field {

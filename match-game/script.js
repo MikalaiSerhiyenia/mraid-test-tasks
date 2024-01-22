@@ -28,6 +28,10 @@ function startGame() {
   gameTimer.classList.add("match-game__info__timer");
   gameTimer.innerHTML = "<img src='./images/timer.png' alt='Timer'>";
 
+  const countdown = document.createElement("span");
+  countdown.classList.add("match-game__info__countdown");
+  countdown.textContent = `:30`;
+
   const gamePlayField = document.createElement("div");
   gamePlayField.classList.add("match-game__play-field");
 
@@ -49,10 +53,12 @@ function startGame() {
   matchGame.appendChild(gamePlayField);
   gameInfo.appendChild(gameTitle);
   gameInfo.appendChild(gameTimer);
+  gameTimer.appendChild(countdown);
 
   const items = document.querySelectorAll(".match-game__play-field__item");
 
   fillGameField(items, image);
+  // startCountdown();
 }
 
 // Create a function for selecting a random image
@@ -71,26 +77,41 @@ function fillGameField(element, array) {
   });
 }
 
-//
+// Process clicks on field elements
 
 document.addEventListener("click", handleClick);
+
+let countdownStarted = false;
 
 function handleClick(event) {
   const target = event.target;
   if (target.classList.contains("item")) {
+    if (!countdownStarted) {
+      startCountdown();
+      countdownStarted = true;
+    }
     target.parentNode.classList.add("active");
   }
 }
 
-let lastClickTime = 0;
+// Create countdown function from 30 to 0
 
-document.addEventListener("click", () => {
-  const currentClickTime = new Date().getTime();
-  const interval = currentClickTime - lastClickTime;
-  if (interval > 3000) {
-    setTimeout(function () {
-      alert("3 секунды");
-    }, 3000);
+function startCountdown() {
+  const countdown = document.querySelector(".match-game__info__countdown");
+  let seconds = 30;
+  function updateCountdown() {
+    if (seconds >= 10) {
+      countdown.textContent = `:${seconds}`;
+      seconds--;
+      setTimeout(updateCountdown, 1000);
+    } else if (seconds >= 0 && seconds < 10) {
+      countdown.textContent = `:0${seconds}`;
+      seconds--;
+      setTimeout(updateCountdown, 1000);
+    } else {
+      console.log("Время вышло!");
+    }
   }
-  lastClickTime = 0;
-});
+
+  updateCountdown();
+}
