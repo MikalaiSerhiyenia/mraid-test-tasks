@@ -69,9 +69,13 @@ body {
               top: 50%;
               left: 50%;
               transform: translate(-50%, -50%);
-              width: 80%;
+              width: 90%;
               animation: appear 2s ease-in-out;
             }
+          }
+          .active {
+            border: 5px solid #418f21;
+            border-radius: 20%;
           }
         }
       }

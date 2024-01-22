@@ -4,14 +4,9 @@ document.addEventListener("DOMContentLoaded", startGame);
 
 // Create a map with paths to images
 
-const images = new Map([
-  ["banana", "./images/banana.png"],
-  ["coco", "./images/coco.png"],
-  ["grape", "./images/grape.png"],
-  ["lemon", "./images/lemon.png"],
-  ["lime", "./images/lime.png"],
-  ["pear", "./images/pear.png"],
-]);
+const images = ["banana", "coco", "grape", "lemon", "lime", "pear"];
+
+const image = randomImage(images);
 
 // Create a function to start the game
 
@@ -57,21 +52,45 @@ function startGame() {
 
   const items = document.querySelectorAll(".match-game__play-field__item");
 
-  fillGameField(items, images);
+  fillGameField(items, image);
 }
 
 // Create a function for selecting a random image
 
-function randomImage(map) {
-  const array = Array.from(map.keys());
+function randomImage(array) {
   const item = Math.floor(Math.random() * array.length);
-  return map.get(array[item]);
+  return array[item];
 }
 
 // Create a function to fill a field with random images
 
-function fillGameField(array, map) {
-  array.forEach((element) => {
-    element.innerHTML += `<img src='${randomImage(map)}' class='item'>`;
+function fillGameField(element, array) {
+  element.forEach((i) => {
+    const item = randomImage(images);
+    i.innerHTML += `<img src='./images/${item}.png' alt='${item}' class='item ${item}'>`;
   });
 }
+
+//
+
+document.addEventListener("click", handleClick);
+
+function handleClick(event) {
+  const target = event.target;
+  if (target.classList.contains("item")) {
+    target.parentNode.classList.add("active");
+  }
+}
+
+let lastClickTime = 0;
+
+document.addEventListener("click", () => {
+  const currentClickTime = new Date().getTime();
+  const interval = currentClickTime - lastClickTime;
+  if (interval > 3000) {
+    setTimeout(function () {
+      alert("3 секунды");
+    }, 3000);
+  }
+  lastClickTime = 0;
+});
