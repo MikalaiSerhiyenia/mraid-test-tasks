@@ -1,9 +1,8 @@
 // Start the game when the page loads
 
 document.addEventListener("DOMContentLoaded", () => {
-  // startGame();
-  // play();
-  restart();
+  startGame();
+  play();
 });
 
 // Create a map with paths to images
@@ -35,7 +34,7 @@ function startGame() {
 
   const countdown = document.createElement("span");
   countdown.classList.add("match-game__info__countdown");
-  countdown.textContent = `:10`;
+  countdown.textContent = `:59`;
 
   const gamePlayField = document.createElement("div");
   gamePlayField.classList.add("match-game__play-field");
@@ -102,7 +101,7 @@ function handleClick(event) {
 
 function startCountdown() {
   const countdown = document.querySelector(".match-game__info__countdown");
-  let seconds = 10;
+  let seconds = 59;
   function updateCountdown() {
     if (seconds >= 10) {
       countdown.textContent = `:${seconds}`;
@@ -127,13 +126,11 @@ function play() {
   const playField = document.querySelector(".match-game__play-field");
   let selectedTiles = [];
 
+  playField.removeEventListener("click", handleTileClick);
   playField.addEventListener("click", handleTileClick);
 
   function handleTileClick(event) {
     const target = event.target.closest(".match-game__play-field__item");
-    const alts = document.querySelectorAll(
-      ".match-game__play-field__item .item"
-    );
 
     if (
       !target ||
@@ -163,6 +160,7 @@ function play() {
           });
           selectedTiles = [];
         }, 1000);
+        return;
       }
 
       let countElementsWithClass = document.querySelectorAll(
@@ -185,31 +183,47 @@ function play() {
 
 function endGame() {
   const boxes = document.querySelectorAll(".match-game__play-field__item");
-
   boxes.forEach((box) => {
     box.classList.remove("active", "incorrect");
     box.classList.add("matched");
   });
+
   setTimeout(() => {
     main.innerHTML = "";
+    restart();
   }, 1000);
 }
 
 // Restart game function
 
-// function restart() {
-//   const gameResult = document.createElement("div");
-//   gameResult.classList.add("game-result");
+function restart() {
+  countdownStarted = false;
+  const gameResult = document.createElement("div");
+  gameResult.classList.add("game-result");
 
-//   const gameResultMessage = document.createElement("div");
-//   gameResultMessage.classList.add("game-result__message");
-//   gameResultMessage.textContent = "Game Over";
+  const gameResultMessage = document.createElement("div");
+  gameResultMessage.classList.add("game-result__message");
+  gameResultMessage.textContent = "Game Over";
 
-//   const playButton = document.createElement("div");
-//   playButton.classList.add("game-result__play-btn");
-//   playButton.innerHTML = `<img src='./images/button.png' alt='Play Button' class='play-btn'>`;
+  const playButton = document.createElement("button");
+  playButton.type = "button";
+  playButton.textContent = "Play";
+  playButton.classList.add("game-result__play-btn");
+  playButton.innerHTML =
+    "<img src='./images/button.png' alt='Play Button' class='play-btn'>" +
+    "<span>Play</span>";
 
-//   main.appendChild(gameResult);
-//   gameResult.append(gameResultMessage);
-//   gameResult.append(playButton);
-// }
+  main.appendChild(gameResult);
+  gameResult.append(gameResultMessage);
+  gameResult.append(playButton);
+
+  function restartGame() {
+    main.innerHTML = "";
+    countdownStarted = false;
+    startGame();
+    play();
+  }
+
+  playButton.removeEventListener("click", restartGame);
+  playButton.addEventListener("click", restartGame);
+}

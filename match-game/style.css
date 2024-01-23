@@ -16,7 +16,15 @@ body .main .game-result, body .main .match-game .match-game__play-field .match-g
   justify-content: center;
 }
 
+body .main .game-result .game-result__play-btn span, body {
+  font-family: "TTNormsProBlack", sans-serif;
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+}
+
 body {
+  text-shadow: -4px -4px 0 #418f21, 4px -4px 0 #418f21, -4px 4px 0 #418f21, 4px 4px 0 #418f21;
   width: 100vw;
   height: 100vh;
   background: url(./images/background.jpg) center/cover no-repeat;
@@ -51,9 +59,6 @@ body .main .match-game .match-game__info .match-game__info__timer img {
 }
 body .main .match-game .match-game__info .match-game__info__timer .match-game__info__countdown {
   align-self: flex-end;
-  font-size: 4rem;
-  font-weight: bold;
-  color: #418f21;
 }
 body .main .match-game .match-game__play-field {
   width: 400px;
@@ -103,6 +108,29 @@ body .main .match-game .match-game__play-field .match-game__play-field__row .inc
 }
 body .main .game-result {
   flex-direction: column;
+  gap: 20px;
+  animation: appear 2s ease-in-out;
+}
+body .main .game-result .game-result__play-btn {
+  position: relative;
+  border: none;
+  background-color: inherit;
+  width: 400px;
+  cursor: pointer;
+  transition: 0.5s linear;
+}
+body .main .game-result .game-result__play-btn img {
+  width: 100%;
+  height: auto;
+}
+body .main .game-result .game-result__play-btn span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+body .main .game-result .game-result__play-btn:hover {
+  transform: scale(1.1);
 }
 @media screen and (max-width: 1023px) {
   body .main .match-game {

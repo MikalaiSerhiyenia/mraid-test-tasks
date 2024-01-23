@@ -18,7 +18,18 @@
   justify-content: center;
 }
 
+%font-style {
+  font-family: "TTNormsProBlack", sans-serif;
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+}
+
 body {
+  @extend %font-style;
+  text-shadow: -4px -4px 0 #418f21, 4px -4px 0 #418f21, -4px 4px 0 #418f21,
+    4px 4px 0 #418f21;
+
   @extend %flex-center;
   width: 100vw;
   height: 100vh;
@@ -54,9 +65,6 @@ body {
           }
           .match-game__info__countdown {
             align-self: flex-end;
-            font-size: 4rem;
-            font-weight: bold;
-            color: #418f21;
           }
         }
       }
@@ -115,6 +123,30 @@ body {
     .game-result {
       @extend %flex-center;
       flex-direction: column;
+      gap: 20px;
+      animation: appear 2s ease-in-out;
+      .game-result__play-btn {
+        position: relative;
+        border: none;
+        background-color: inherit;
+        width: 400px;
+        cursor: pointer;
+        transition: 0.5s linear;
+        img {
+          width: 100%;
+          height: auto;
+        }
+        span {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          @extend %font-style;
+        }
+      }
+      .game-result__play-btn:hover {
+        transform: scale(1.1);
+      }
     }
     @media screen and (max-width: 1023px) {
       .match-game {
