@@ -1,4 +1,16 @@
-body .main .match-game .match-game__play-field .match-game__play-field__row .match-game__play-field__item, body .main .match-game .match-game__play-field .match-game__play-field__row, body .main .match-game .match-game__play-field, body .main .match-game .match-game__info .match-game__info__timer, body .main .match-game .match-game__info .match-game__info__title, body .main .match-game .match-game__info, body .main .match-game, body .main, body {
+@font-face {
+  font-family: "TTNormsProBlack";
+  font-style: normal;
+  font-weight: normal;
+  src: url("TTNormsProBlack.otf");
+}
+@font-face {
+  font-family: "TTNormsProBlackItalic";
+  font-style: normal;
+  font-weight: normal;
+  src: url("TTNormsProBlackItalic.otf");
+}
+body .main .game-result, body .main .match-game .match-game__play-field .match-game__play-field__row .match-game__play-field__item, body .main .match-game .match-game__play-field .match-game__play-field__row, body .main .match-game .match-game__play-field, body .main .match-game .match-game__info .match-game__info__timer, body .main .match-game .match-game__info .match-game__info__title, body .main .match-game .match-game__info, body .main .match-game, body .main, body {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,12 +56,13 @@ body .main .match-game .match-game__info .match-game__info__timer .match-game__i
   color: #418f21;
 }
 body .main .match-game .match-game__play-field {
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
   flex-direction: column;
   align-items: center;
   position: relative;
   animation: side-appear 1s linear;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 body .main .match-game .match-game__play-field .match-game__play-field__row {
   width: 100%;
@@ -87,6 +100,9 @@ body .main .match-game .match-game__play-field .match-game__play-field__row .mat
 }
 body .main .match-game .match-game__play-field .match-game__play-field__row .incorrect {
   animation: shakeAnimation 0.5s ease-in-out;
+}
+body .main .game-result {
+  flex-direction: column;
 }
 @media screen and (max-width: 1023px) {
   body .main .match-game {

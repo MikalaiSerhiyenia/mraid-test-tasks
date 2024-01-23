@@ -1,8 +1,9 @@
 // Start the game when the page loads
 
 document.addEventListener("DOMContentLoaded", () => {
-  startGame();
-  play();
+  // startGame();
+  // play();
+  restart();
 });
 
 // Create a map with paths to images
@@ -13,6 +14,7 @@ const image = randomImage(images);
 
 const main = document.createElement("main");
 main.classList.add("main");
+document.body.appendChild(main);
 
 // Create a function to start the game
 
@@ -33,7 +35,7 @@ function startGame() {
 
   const countdown = document.createElement("span");
   countdown.classList.add("match-game__info__countdown");
-  countdown.textContent = `:30`;
+  countdown.textContent = `:10`;
 
   const gamePlayField = document.createElement("div");
   gamePlayField.classList.add("match-game__play-field");
@@ -100,7 +102,7 @@ function handleClick(event) {
 
 function startCountdown() {
   const countdown = document.querySelector(".match-game__info__countdown");
-  let seconds = 30;
+  let seconds = 10;
   function updateCountdown() {
     if (seconds >= 10) {
       countdown.textContent = `:${seconds}`;
@@ -192,3 +194,22 @@ function endGame() {
     main.innerHTML = "";
   }, 1000);
 }
+
+// Restart game function
+
+// function restart() {
+//   const gameResult = document.createElement("div");
+//   gameResult.classList.add("game-result");
+
+//   const gameResultMessage = document.createElement("div");
+//   gameResultMessage.classList.add("game-result__message");
+//   gameResultMessage.textContent = "Game Over";
+
+//   const playButton = document.createElement("div");
+//   playButton.classList.add("game-result__play-btn");
+//   playButton.innerHTML = `<img src='./images/button.png' alt='Play Button' class='play-btn'>`;
+
+//   main.appendChild(gameResult);
+//   gameResult.append(gameResultMessage);
+//   gameResult.append(playButton);
+// }
