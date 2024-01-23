@@ -1,6 +1,9 @@
 // Start the game when the page loads
 
-document.addEventListener("DOMContentLoaded", startGame);
+document.addEventListener("DOMContentLoaded", () => {
+  startGame();
+  play();
+});
 
 // Create a map with paths to images
 
@@ -58,7 +61,6 @@ function startGame() {
   const items = document.querySelectorAll(".match-game__play-field__item");
 
   fillGameField(items, image);
-  // startCountdown();
 }
 
 // Create a function for selecting a random image
@@ -114,4 +116,53 @@ function startCountdown() {
   }
 
   updateCountdown();
+}
+
+// Play function
+
+function play() {
+  const playField = document.querySelector(".match-game__play-field");
+  let selectedTiles = [];
+
+  playField.addEventListener("click", handleTileClick);
+
+  function handleTileClick(event) {
+    const target = event.target.closest(".match-game__play-field__item");
+
+    if (
+      !target ||
+      target.classList.contains("matched") ||
+      target.classList.contains("active")
+    ) {
+      return;
+    }
+
+    if (selectedTiles.length < 3) {
+      target.classList.add("active");
+      selectedTiles.push(target);
+    }
+
+    if (selectedTiles.length === 3) {
+      const tile1 = selectedTiles[0].querySelector(".item");
+      const tile2 = selectedTiles[1].querySelector(".item");
+      const tile3 = selectedTiles[2].querySelector(".item");
+
+      if (tile1.alt === tile2.alt && tile2.alt === tile3.alt) {
+        event.stopPropagation();
+        selectedTiles.forEach((tile) => tile.classList.add("matched"));
+        setTimeout(() => {
+          selectedTiles = [];
+        }, 1000);
+      } else {
+        event.stopPropagation();
+        selectedTiles.forEach((tile) => tile.classList.add("incorrect"));
+        setTimeout(() => {
+          selectedTiles.forEach((tile) => {
+            tile.classList.remove("active", "incorrect");
+          });
+          selectedTiles = [];
+        }, 1000);
+      }
+    }
+  }
 }
