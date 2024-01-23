@@ -58,6 +58,7 @@ body .main .match-game .match-game__play-field .match-game__play-field__row .mat
   position: relative;
   width: 50px;
   height: 50px;
+  overflow: hidden;
 }
 body .main .match-game .match-game__play-field .match-game__play-field__row .match-game__play-field__item .box {
   position: absolute;
@@ -78,10 +79,11 @@ body .main .match-game .match-game__play-field .match-game__play-field__row .mat
 body .main .match-game .match-game__play-field .match-game__play-field__row .active {
   border: 5px solid #418f21;
   border-radius: 20%;
+  animation: pulse 2s infinite;
 }
 body .main .match-game .match-game__play-field .match-game__play-field__row .matched {
   transition: 0.5s linear;
-  transform: scale(0);
+  opacity: 0;
 }
 body .main .match-game .match-game__play-field .match-game__play-field__row .incorrect {
   animation: shakeAnimation 0.5s ease-in-out;
@@ -122,12 +124,6 @@ body .main .match-game .match-game__play-field .match-game__play-field__row .inc
     transform: scale(1);
   }
 }
-@keyframes disappearAnimation {
-  to {
-    opacity: 0;
-    transform: scale(0);
-  }
-}
 @keyframes shakeAnimation {
   0%, 100% {
     transform: translateX(0);
@@ -137,5 +133,16 @@ body .main .match-game .match-game__play-field .match-game__play-field__row .inc
   }
   50% {
     transform: translateX(5px);
+  }
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
   }
 }/*# sourceMappingURL=style.css.map */

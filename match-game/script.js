@@ -11,12 +11,12 @@ const images = ["banana", "coco", "grape", "lemon", "lime", "pear"];
 
 const image = randomImage(images);
 
+const main = document.createElement("main");
+main.classList.add("main");
+
 // Create a function to start the game
 
 function startGame() {
-  const main = document.createElement("main");
-  main.classList.add("main");
-
   const matchGame = document.createElement("div");
   matchGame.classList.add("match-game");
 
@@ -112,6 +112,7 @@ function startCountdown() {
       setTimeout(updateCountdown, 1000);
     } else {
       console.log("Время вышло!");
+      endGame();
     }
   }
 
@@ -128,6 +129,9 @@ function play() {
 
   function handleTileClick(event) {
     const target = event.target.closest(".match-game__play-field__item");
+    const alts = document.querySelectorAll(
+      ".match-game__play-field__item .item"
+    );
 
     if (
       !target ||
@@ -137,24 +141,19 @@ function play() {
       return;
     }
 
-    if (selectedTiles.length < 3) {
-      target.classList.add("active");
-      selectedTiles.push(target);
-    }
+    target.classList.add("active");
+    selectedTiles.push(target);
 
-    if (selectedTiles.length === 3) {
-      const tile1 = selectedTiles[0].querySelector(".item");
-      const tile2 = selectedTiles[1].querySelector(".item");
-      const tile3 = selectedTiles[2].querySelector(".item");
+    let altValues = selectedTiles.map(
+      (tile) => tile.querySelector(".item").alt
+    );
 
-      if (tile1.alt === tile2.alt && tile2.alt === tile3.alt) {
-        event.stopPropagation();
-        selectedTiles.forEach((tile) => tile.classList.add("matched"));
-        setTimeout(() => {
-          selectedTiles = [];
-        }, 1000);
-      } else {
-        event.stopPropagation();
+    if (selectedTiles.length > 1) {
+      let areAllAltValuesEqual = altValues.every(
+        (value, index, array) => value === array[0]
+      );
+
+      if (!areAllAltValuesEqual) {
         selectedTiles.forEach((tile) => tile.classList.add("incorrect"));
         setTimeout(() => {
           selectedTiles.forEach((tile) => {
@@ -163,6 +162,33 @@ function play() {
           selectedTiles = [];
         }, 1000);
       }
+
+      let countElementsWithClass = document.querySelectorAll(
+        `.item.${altValues[0]}`
+      ).length;
+
+      if (selectedTiles.length === countElementsWithClass) {
+        selectedTiles.forEach((tile) => {
+          tile.classList.add("matched");
+        });
+        setTimeout(() => {
+          selectedTiles = [];
+        }, 1000);
+      }
     }
   }
+}
+
+// End game function
+
+function endGame() {
+  const boxes = document.querySelectorAll(".match-game__play-field__item");
+
+  boxes.forEach((box) => {
+    box.classList.remove("active", "incorrect");
+    box.classList.add("matched");
+  });
+  setTimeout(() => {
+    main.innerHTML = "";
+  }, 1000);
 }
