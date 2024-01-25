@@ -1,0 +1,193 @@
+@font-face {
+  font-family: "TTNormsProBlack";
+  font-style: normal;
+  font-weight: normal;
+  src: url("TTNormsProBlack.otf");
+}
+@font-face {
+  font-family: "TTNormsProBlackItalic";
+  font-style: normal;
+  font-weight: normal;
+  src: url("TTNormsProBlackItalic.otf");
+}
+body .main .game-result, body .main .match-game .match-game__play-field .match-game__play-field__row .match-game__play-field__item, body .main .match-game .match-game__play-field .match-game__play-field__row, body .main .match-game .match-game__play-field, body .main .match-game .match-game__info .match-game__info__timer, body .main .match-game .match-game__info .match-game__info__title, body .main .match-game .match-game__info, body .main .match-game, body .main, body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body .main .game-result .game-result__play-btn span, body {
+  font-family: "TTNormsProBlack", sans-serif;
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+}
+
+body .main .matched, body .main .match-game .match-game__play-field .match-game__play-field__row .matched {
+  transition: 1s linear;
+  opacity: 0;
+}
+
+body {
+  text-shadow: -4px -4px 0 #418f21, 4px -4px 0 #418f21, -4px 4px 0 #418f21, 4px 4px 0 #418f21;
+  width: 100vw;
+  height: 100vh;
+  background: url(./images/background.jpg) center/cover no-repeat;
+}
+body .main {
+  width: 100%;
+  height: 100%;
+}
+body .main .match-game {
+  gap: 12px;
+  width: 1024px;
+  height: 512px;
+}
+body .main .match-game .match-game__info {
+  flex-direction: column;
+  gap: 12px;
+  width: 500px;
+  height: 500px;
+  animation: rotate 1s linear;
+}
+body .main .match-game .match-game__info .match-game__info__title {
+  width: 100%;
+}
+body .main .match-game .match-game__info .match-game__info__title img {
+  height: 60px;
+}
+body .main .match-game .match-game__info .match-game__info__timer {
+  width: 100%;
+}
+body .main .match-game .match-game__info .match-game__info__timer img {
+  height: 80px;
+}
+body .main .match-game .match-game__info .match-game__info__timer .match-game__info__countdown {
+  align-self: flex-end;
+}
+body .main .match-game .match-game__play-field {
+  width: 400px;
+  height: 400px;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  animation: side-appear 1s linear;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+body .main .match-game .match-game__play-field .match-game__play-field__row {
+  width: 100%;
+}
+body .main .match-game .match-game__play-field .match-game__play-field__row .match-game__play-field__item {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+}
+body .main .match-game .match-game__play-field .match-game__play-field__row .match-game__play-field__item .box {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+body .main .match-game .match-game__play-field .match-game__play-field__row .match-game__play-field__item .item {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  animation: appear 2s ease-in-out;
+}
+body .main .match-game .match-game__play-field .match-game__play-field__row .active {
+  border: 5px solid #418f21;
+  border-radius: 20%;
+  animation: pulse 2s infinite;
+}
+body .main .match-game .match-game__play-field .match-game__play-field__row .incorrect {
+  animation: shakeAnimation 0.5s ease-in-out;
+}
+body .main .game-result {
+  flex-direction: column;
+  gap: 20px;
+  animation: appear 2s ease-in-out;
+}
+body .main .game-result .game-result__play-btn {
+  position: relative;
+  border: none;
+  background-color: inherit;
+  width: 400px;
+  cursor: pointer;
+  transition: 0.5s linear;
+}
+body .main .game-result .game-result__play-btn img {
+  width: 100%;
+  height: auto;
+}
+body .main .game-result .game-result__play-btn span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+body .main .game-result .game-result__play-btn:hover {
+  transform: scale(1.1);
+}
+@media screen and (max-width: 1023px) {
+  body .main .match-game {
+    flex-direction: column;
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotateX(90deg);
+  }
+  50% {
+    transform: rotateX(45deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+@keyframes side-appear {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes shakeAnimation {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25%, 75% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}/*# sourceMappingURL=style.css.map */
