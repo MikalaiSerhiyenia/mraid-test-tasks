@@ -14,6 +14,7 @@ document.addEventListener("click", (event) => {
 let seconds = 59;
 let countdownStarted = false;
 let result = 0;
+let timeoutId;
 
 // Create a map with paths to images
 
@@ -110,6 +111,12 @@ function play() {
         selectedTiles.forEach((tile) => tile.classList.add("matched"));
         setTimeout(() => {
           selectedTiles = [];
+          checkResult();
+          console.log(result);
+          if (result === 64) {
+            seconds = 0;
+            endGame();
+          }
         }, getAnimationDuration());
       }
     }
@@ -126,6 +133,7 @@ function endGame() {
     item.classList.add("matched");
   });
   matchGame.classList.add("matched");
+  clearTimeout(timeoutId);
   setTimeout(() => {
     playAgain(items, matchGame);
   }, getAnimationDuration());
@@ -189,9 +197,11 @@ function updateCountdown(sec, elem) {
     endGame();
     return;
   }
-
   sec--;
-  setTimeout(() => updateCountdown(sec, elem), getAnimationDuration());
+  timeoutId = setTimeout(
+    () => updateCountdown(sec, elem),
+    getAnimationDuration()
+  );
 }
 
 // Create countdown function from 30 to 0
@@ -250,6 +260,7 @@ function getAnimationDuration() {
 function restartGame() {
   main.innerHTML = "";
   seconds = 59;
+  result = 0;
   countdownStarted = false;
   selectedTiles = [];
   startGame();
