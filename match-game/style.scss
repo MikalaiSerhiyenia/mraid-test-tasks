@@ -25,6 +25,11 @@
   color: white;
 }
 
+%dissapear {
+  transition: 1s linear;
+  opacity: 0;
+}
+
 body {
   @extend %font-style;
   text-shadow: -4px -4px 0 #418f21, 4px -4px 0 #418f21, -4px 4px 0 #418f21,
@@ -111,14 +116,16 @@ body {
             animation: pulse 2s infinite;
           }
           .matched {
-            transition: 0.5s linear;
-            opacity: 0;
+            @extend %dissapear;
           }
           .incorrect {
             animation: shakeAnimation 0.5s ease-in-out;
           }
         }
       }
+    }
+    .matched {
+      @extend %dissapear;
     }
     .game-result {
       @extend %flex-center;

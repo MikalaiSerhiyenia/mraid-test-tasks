@@ -13,6 +13,7 @@ document.addEventListener("click", (event) => {
 
 let seconds = 59;
 let countdownStarted = false;
+let result = 0;
 
 // Create a map with paths to images
 
@@ -20,53 +21,37 @@ const images = ["banana", "coco", "grape", "lemon", "lime", "pear"];
 
 // Create elements
 
-const main = document.createElement("main");
-main.classList.add("main");
+const main = createElement("main", ["main"]);
+const matchGame = createElement("div", ["match-game"]);
+const gameInfo = createElement("div", ["match-game__info"]);
+const gameTitle = createElement("div", ["match-game__info__title"]);
+const gameTimer = createElement("div", ["match-game__info__timer"]);
+const countdown = createElement("span", ["match-game__info__countdown"]);
+const gamePlayField = createElement("div", ["match-game__play-field"]);
+const gameResult = createElement("div", ["game-result"]);
+const gameResultMessage = createElement("div", ["game-result__message"]);
+const playButton = createElement("button", ["game-result__play-btn"]);
 
-const matchGame = document.createElement("div");
-matchGame.classList.add("match-game");
+// Track selected tiles
 
-const gameInfo = document.createElement("div");
-gameInfo.classList.add("match-game__info");
-
-const gameTitle = document.createElement("div");
-gameTitle.classList.add("match-game__info__title");
-gameTitle.innerHTML = "<img src='./images/text.png' alt='Match 3 tiles'>";
-
-const gameTimer = document.createElement("div");
-gameTimer.classList.add("match-game__info__timer");
-gameTimer.innerHTML = "<img src='./images/timer.png' alt='Timer'>";
-
-const countdown = document.createElement("span");
-countdown.classList.add("match-game__info__countdown");
-countdown.textContent = `:59`;
-
-const gamePlayField = document.createElement("div");
-gamePlayField.classList.add("match-game__play-field");
-
-const gameRow = document.createElement("div");
-gameRow.classList.add("match-game__play-field__row");
-
-const gameItem = document.createElement("div");
-gameItem.classList.add("match-game__play-field__item");
-gameItem.innerHTML = `<img src='./images/box.png' alt='Game Item' class='box'>`;
-
-createPlayField(gamePlayField);
+let selectedTiles = [];
 
 // Create a function to start the game
 
 function startGame() {
-  document.body.appendChild(main);
-  main.appendChild(matchGame);
-  matchGame.appendChild(gameInfo);
-  matchGame.appendChild(gamePlayField);
-  gameInfo.appendChild(gameTitle);
-  gameInfo.appendChild(gameTimer);
-  gameTimer.appendChild(countdown);
+  gameTitle.innerHTML = "<img src='./images/text.png' alt='Match 3 tiles'>";
+  gameTimer.innerHTML = "<img src='./images/timer.png' alt='Timer'>";
+  countdown.textContent = `:${seconds}`;
 
-  const items = document.querySelectorAll(".match-game__play-field__item");
+  appendChild(document.body, main);
+  appendChild(main, matchGame);
+  appendChild(matchGame, gameInfo);
+  appendChild(matchGame, gamePlayField);
+  appendChild(gameInfo, gameTitle);
+  appendChild(gameInfo, gameTimer);
+  appendChild(gameTimer, countdown);
 
-  fillGameField(items);
+  createPlayField(gamePlayField);
 }
 
 // Process clicks on field elements
@@ -87,7 +72,6 @@ function handleClick(event) {
 
 function play() {
   const playField = document.querySelector(".match-game__play-field");
-  let selectedTiles = [];
 
   playField.addEventListener("click", handleTileClick);
 
@@ -135,50 +119,42 @@ function play() {
 // End game function
 
 function endGame() {
-  const boxes = document.querySelectorAll(".match-game__play-field__item");
-  boxes.forEach((box) => {
-    box.classList.remove("active", "incorrect");
-    box.classList.add("matched");
+  const items = document.querySelectorAll(".match-game__play-field__item");
+  const matchGame = document.querySelector(".match-game");
+  items.forEach((item) => {
+    item.classList.remove("active", "incorrect");
+    item.classList.add("matched");
   });
-
+  matchGame.classList.add("matched");
   setTimeout(() => {
-    main.innerHTML = "";
-    restart();
+    playAgain(items, matchGame);
   }, getAnimationDuration());
 }
 
 // Restart game function
 
-function restart() {
-  countdownStarted = false;
-  const gameResult = document.createElement("div");
-  gameResult.classList.add("game-result");
+function playAgain(array, elem) {
+  array.forEach((item) => {
+    item.classList.remove("matched");
+    item.innerHTML = "";
+  });
+  elem.classList.remove("matched");
+  gamePlayField.innerHTML = "";
+  main.innerHTML = "";
 
-  const gameResultMessage = document.createElement("div");
-  gameResultMessage.classList.add("game-result__message");
-
-  checkResult(gameResultMessage);
-
-  const playButton = document.createElement("button");
   playButton.type = "button";
   playButton.textContent = "Play";
-  playButton.classList.add("game-result__play-btn");
   playButton.innerHTML =
     "<img src='./images/button.png' alt='Play Button' class='play-btn'>" +
     "<span>Play</span>";
-
-  main.appendChild(gameResult);
-  gameResult.append(gameResultMessage);
-  gameResult.append(playButton);
-
-  function restartGame() {
-    main.innerHTML = "";
-    countdownStarted = false;
-    startGame();
-    play();
-  }
-
   playButton.removeEventListener("click", restartGame);
+
+  showResult(result, gameResultMessage);
+
+  appendChild(main, gameResult);
+  appendChild(gameResult, gameResultMessage);
+  appendChild(gameResult, playButton);
+
   playButton.addEventListener("click", restartGame);
 }
 
@@ -209,6 +185,7 @@ function updateCountdown(sec, elem) {
   } else if (sec >= 0 && sec < 10) {
     elem.textContent = `:0${sec}`;
   } else {
+    checkResult();
     endGame();
     return;
   }
@@ -226,27 +203,26 @@ function startCountdown() {
 
 // check result
 
-function checkResult(elem) {
-  const matchedLength = document.querySelectorAll(".matched").length;
-  return matchedLength === 64
-    ? (elem.textContent = "You win!")
-    : (elem.textContent = "Game Over");
+function checkResult() {
+  const matchedLength = document.querySelectorAll(
+    ".match-game__play-field__item.active.matched"
+  ).length;
+  result = matchedLength;
 }
 
 // Create play field
 
-function createPlayField(elem1) {
+function createPlayField(elem) {
   for (let i = 0; i < 8; i++) {
-    const gameRow = document.createElement("div");
-    gameRow.classList.add("match-game__play-field__row");
+    const gameRow = createElement("div", ["match-game__play-field__row"]);
     for (let j = 0; j < 8; j++) {
-      const gameItem = document.createElement("div");
-      gameItem.classList.add("match-game__play-field__item");
-      gameItem.innerHTML = `<img src='./images/box.png' alt='Game Item' class='box'>`;
-      gameRow.appendChild(gameItem);
+      const gameItem = createElement("div", ["match-game__play-field__item"]);
+      appendChild(gameRow, gameItem);
     }
-    elem1.appendChild(gameRow);
+    appendChild(elem, gameRow);
   }
+  const items = document.querySelectorAll(".match-game__play-field__item");
+  fillGameField(items);
 }
 
 // Create a function for selecting a random image
@@ -261,7 +237,7 @@ function randomImage(array) {
 function fillGameField(array) {
   array.forEach((i) => {
     const image = randomImage(images);
-    i.innerHTML += `<img src='./images/${image}.png' alt='${image}' class='item ${image}'>`;
+    i.innerHTML += `<img src='./images/box.png' alt='Game Item' class='box'><img src='./images/${image}.png' alt='${image}' class='item ${image}'>`;
   });
 }
 
@@ -269,4 +245,38 @@ function fillGameField(array) {
 
 function getAnimationDuration() {
   return 1000;
+}
+
+function restartGame() {
+  main.innerHTML = "";
+  seconds = 59;
+  countdownStarted = false;
+  selectedTiles = [];
+  startGame();
+}
+
+// Create elements
+
+function createElement(tagName, classNames) {
+  const element = document.createElement(tagName);
+
+  if (classNames && classNames.length > 0) {
+    element.classList.add(...classNames);
+  }
+
+  return element;
+}
+
+// Append children
+
+function appendChild(parent, child) {
+  return parent.appendChild(child);
+}
+
+// Show result
+
+function showResult(num, elem) {
+  return num === 64
+    ? (elem.textContent = "You win!")
+    : (elem.textContent = "Game Over");
 }
