@@ -107,13 +107,13 @@ function play() {
         return;
       }
 
-      if (selectedTiles.length === countElementsWithClass(className)) {
+      if (selectedTiles.length === 3) {
         selectedTiles.forEach((tile) => tile.classList.add("matched"));
         setTimeout(() => {
           selectedTiles = [];
           checkResult();
           console.log(result);
-          if (result === 64) {
+          if (result === 81) {
             seconds = 0;
             endGame();
           }
@@ -179,11 +179,11 @@ function addClassList(target, array) {
   array.push(target);
 }
 
-// Count elems with class
+// // Count elems with class
 
-function countElementsWithClass(classname) {
-  return document.querySelectorAll(`.item.${classname}`).length;
-}
+// function countElementsWithClass(classname) {
+//   return document.querySelectorAll(`.item.${classname}`).length;
+// }
 
 // Update countdown
 
@@ -223,16 +223,16 @@ function checkResult() {
 // Create play field
 
 function createPlayField(elem) {
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 9; i++) {
     const gameRow = createElement("div", ["match-game__play-field__row"]);
-    for (let j = 0; j < 8; j++) {
+    for (let j = 0; j < 9; j++) {
       const gameItem = createElement("div", ["match-game__play-field__item"]);
       appendChild(gameRow, gameItem);
     }
     appendChild(elem, gameRow);
   }
   const items = document.querySelectorAll(".match-game__play-field__item");
-  fillGameField(items);
+  fillGameField(items, images);
 }
 
 // Create a function for selecting a random image
@@ -244,10 +244,14 @@ function randomImage(array) {
 
 // Create a function to fill a field with random images
 
-function fillGameField(array) {
-  array.forEach((i) => {
-    const image = randomImage(images);
-    i.innerHTML += `<img src='./images/box.png' alt='Game Item' class='box'><img src='./images/${image}.png' alt='${image}' class='item ${image}'>`;
+function fillGameField(elements, array) {
+  const newImages = makeArray(shuffleArray(array));
+
+  elements.forEach((elem) => {
+    const item = getRandomAndRemove(newImages);
+    elem.innerHTML =
+      "<img src='./images/box.png' alt='Game Item' class='box'>" +
+      `<img src='./images/${item}.png' alt='${item}' class='item ${item}'>`;
   });
 }
 
@@ -287,7 +291,42 @@ function appendChild(parent, child) {
 // Show result
 
 function showResult(num, elem) {
-  return num === 64
+  return num === 81
     ? (elem.textContent = "You win!")
     : (elem.textContent = "Game Over");
+}
+
+// Shuffle array
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Make new array of images (81 elements)
+
+function makeArray(array) {
+  const newArr = [];
+  for (let i = 0; i < 15; i++) {
+    newArr.push(...array.slice(0, 3));
+  }
+  for (let i = 0; i < 12; i++) {
+    newArr.push(...array.slice(3, 6));
+  }
+  return newArr;
+}
+
+// Get random element and remove
+
+function getRandomAndRemove(array) {
+  if (array.length === 0) {
+    return null;
+  }
+  const randomIndex = Math.floor(Math.random() * array.length);
+  const randomElement = array[randomIndex];
+  array.splice(randomIndex, 1);
+  return randomElement;
 }
