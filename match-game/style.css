@@ -67,7 +67,7 @@ body .main .match-game .match-game__info .match-game__info__timer .match-game__i
 }
 body .main .match-game .match-game__play-field {
   width: 400px;
-  height: 400px;
+  height: 450px;
   flex-direction: column;
   align-items: center;
   position: relative;
