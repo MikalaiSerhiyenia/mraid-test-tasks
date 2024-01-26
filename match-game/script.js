@@ -89,36 +89,43 @@ function play() {
     addClassList(target, selectedTiles);
 
     const altValues = getAltValues(selectedTiles);
-    const className = altValues[0];
 
-    if (selectedTiles.length > 1) {
-      let areAllAltValuesEqual = altValues.every(
-        (value) => value === altValues[0]
-      );
+    // const areAllAltValuesEqual = altValues.every(
+    //   (value) => value === altValues[0]
+    // );
+    // const className = altValues[0];
 
-      if (!areAllAltValuesEqual) {
-        selectedTiles.forEach((tile) => tile.classList.add("incorrect"));
-        setTimeout(() => {
-          selectedTiles.forEach((tile) =>
-            tile.classList.remove("active", "incorrect")
-          );
-          selectedTiles = [];
-        }, getAnimationDuration());
-        return;
-      }
+    if (
+      selectedTiles.length > 1 &&
+      !altValues.every((value) => value === altValues[0])
+    ) {
+      handleIncorrectSelection(selectedTiles);
+      selectedTiles = [];
+    }
 
-      if (selectedTiles.length === 3) {
-        selectedTiles.forEach((tile) => tile.classList.add("matched"));
-        setTimeout(() => {
-          selectedTiles = [];
-          checkResult();
-          console.log(result);
-          if (result === 81) {
-            seconds = 0;
-            endGame();
-          }
-        }, getAnimationDuration());
-      }
+    if (selectedTiles.length === 3) {
+      handleCorrectSelection(selectedTiles);
+      selectedTiles = [];
+    }
+
+    function handleIncorrectSelection(selectedTiles) {
+      selectedTiles.forEach((tile) => tile.classList.add("incorrect"));
+      setTimeout(() => {
+        selectedTiles.forEach((tile) =>
+          tile.classList.remove("active", "incorrect")
+        );
+      }, getAnimationDuration());
+    }
+
+    function handleCorrectSelection(selectedTiles) {
+      selectedTiles.forEach((tile) => tile.classList.add("matched"));
+      setTimeout(() => {
+        checkResult();
+        if (result === 81) {
+          seconds = 0;
+          endGame();
+        }
+      }, getAnimationDuration());
     }
   }
 }
